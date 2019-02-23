@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/sandstone/bulmaswatch.min.css">
+
+    <!-- Fontawesome CDN -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300" rel="stylesheet">
+
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body style="font-family: 'Source Sans Pro', sans-serif;">
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'home' %}" style="font-family: 'VT323', monospace; font-size: 32px">  
+                    Django Real Estates
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <!-- Links based on authentication or not -->
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="navbar-item">Login</a>
+                        <a href="{% url 'register' %}" class="navbar-item">Register</a>
+                    {% else %}
+                        <a href="{% url 'account:dashboard' %}" class="navbar-item">
+                            <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                            <span>Dashboard</span> 
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+
+            <!-- MESSAGES -->
+            {% include 'snippets/messages.html' %}
+
+            <!-- Small tag message -->
+            {% if request.user.is_authenticated %}
+            <div class="field is-grouped is-grouped-multiline">
+                <div class="control">
+                    <div class="tags has-addons">
+                        <span class="tag is-dark is-medium icon"><i class="far fa-user-circle"></i></span>
+                        <span class="tag is-info is-medium"><a href="{% url 'account:dashboard' %}" class="has-text-white">{{ request.user }}</a></span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Navigation tabs -->
+            <div class="tabs">
+                <ul>
+                    <li><a href="{% url 'home' %}"> Home</a></li>
+                    <li><a href="{% url 'properties:house_list' %}">Houses</a></li>
+                    <li><a href="{% url 'properties:apartment_list' %}">Apartments</a></li>
+                    <li><a href="{% url 'properties:unit_list' %}">Units</a></li>
+                    <li><a href="{% url 'blog:article_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                </ul>
+            </div>
+            
+            <!-- Main Content  -->
+            {% block content %}{% endblock content %}
+        
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content">
+                <div class="columns">
+                    <div class="column is-4">
+                        <h1 class="subtitle is-6">Property agents</h1>
+                        <p><a href="{% url 'login' %}">Login</a></p>
+                        <p><a href="{% url 'register' %}">Register</a></p>
+                        <p><a href="{% url 'agent_list' %}">Our agents</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
